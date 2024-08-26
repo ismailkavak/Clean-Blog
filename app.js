@@ -8,8 +8,12 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-  res.send("Index Sayfası");
+  res.status(200).render("index");
 });
+
+app.get("/about", (req, res) => {
+    res.status(200).render("about");
+  });
 
 const port = 3000;
 app.listen(port, () => {
