@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const slugify = require("slugify");
-const Category = require("../models/Category");
 
 const CourseSchema = new Schema({
   name: {
