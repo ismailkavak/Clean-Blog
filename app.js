@@ -1,6 +1,8 @@
 const express = require("express");
-const app = express();
+const mongoose = require('mongoose')
 const pageRoute = require("./routes/pageRoutes");
+
+const app = express();
 
 // TEMPLATE ENGINE
 app.set("view engine", "ejs");
