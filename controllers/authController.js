@@ -24,8 +24,9 @@ exports.loginUser = async (req, res) => {
       res.status(400).send("There is no user!");
     }
     const same = await bcrypt.compare(password, user.password);
-    if(same){
-      res.status(200).send("You loggedd in!")
+    if (same) {
+      req.session.userID = user._id;
+      res.status(200).redirect("/");
     }
   } catch (error) {
     res.status(400).json({
@@ -34,3 +35,9 @@ exports.loginUser = async (req, res) => {
     });
   }
 };
+
+exports.logoutUser = (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/')
+  })
+}
