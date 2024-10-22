@@ -23,9 +23,12 @@ exports.loginUser = async (req, res) => {
       res.status(400).send("There is no user!");
     }
     const same = await bcrypt.compare(password, user.password);
-
+    if (same) {
       req.session.userID = user._id;
       res.status(200).redirect("/users/dashboard");
+    }else {
+      res.status(401).redirect("/login")
+    }
   } catch (error) {
     res.status(400).json({
       status: "failed",
