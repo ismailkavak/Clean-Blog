@@ -42,8 +42,11 @@ exports.getAllCourses = async (req, res) => {
     }
 
     const courses = await Course.find({
-      
-    }).sort('-createdAt');
+      $or:[
+        {name : {$regex: '.*' + filter.name + '.*', $options: 'i'}},
+        {category : filter.category}
+      ]
+    }).sort('-createdAt').populate('user');
     const categories = await Category.find();
     res.status(200).render("courses", {
       courses,
@@ -62,10 +65,12 @@ exports.getCourse = async (req, res) => {
   try {
     const user = await User.findById(req.session.userID)
     const course = await Course.findOne({ slug: req.params.slug }).populate('user');
+    const categories = await Category.find();
     res.status(200).render("course", {
       course,
       page_name: "courses",
       user,
+      categories
     });
   } catch (error) {
     res.status(400).json({
