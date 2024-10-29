@@ -59,7 +59,7 @@ exports.sendEmail = async (req, res) => {
     const info = await transporter.sendMail({
       from: '"Smart Edu Contact Form" <casus589@gmail.com>', // sender address
       to: "WoTBlitz_01@outlook.com", // list of receivers
-      subject: "Smart Edu Contact Form New Message", // Subject line
+      subject: "Smart Edu Contact Form New Message", 
       html: outputMessage, // html body
     });
   
@@ -67,7 +67,7 @@ exports.sendEmail = async (req, res) => {
     // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
   }
   main().catch(console.error);
-    
+
   res.status(200).redirect('contact')
 
 }
