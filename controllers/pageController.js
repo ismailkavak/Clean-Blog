@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 
 exports.getIndexPage = (req, res) => {
-  console.log(req.session.userID)
+  console.log(req.session.userID);
   res.status(200).render("index", {
     page_name: "index",
   });
@@ -32,7 +32,8 @@ exports.getContactPage = (req, res) => {
 };
 
 exports.sendEmail = async (req, res) => {
-  const outputMessage = `
+  try {
+    const outputMessage = `
   <h1> Mail Details </h1>
   <ul>
     <li>Name : ${req.body.name}</li>
@@ -41,33 +42,34 @@ exports.sendEmail = async (req, res) => {
 
   <h1>Message</h1>
   <p> ${req.body.message} </p>
-  `
-  
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true, // true for port 465, false for other ports
-    auth: {
-      user: "casus589@gmail.com",
-      pass: "dffm euhg ckcp zdkb",
-    },
-  });
-  
-  // async..await is not allowed in global scope, must use a wrapper
-  async function main() {
-    // send mail with defined transport object
-    const info = await transporter.sendMail({
-      from: '"Smart Edu Contact Form" <casus589@gmail.com>', // sender address
-      to: "WoTBlitz_01@outlook.com", // list of receivers
-      subject: "Smart Edu Contact Form New Message", 
-      html: outputMessage, // html body
+  `;
+
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // true for port 465, false for other ports
+      auth: {
+        user: "casus589@gmail.com",
+        pass: "dffm euhg ckcp zdkb",
+      },
     });
-  
-    console.log("Message sent: %s", info.messageId);
-    // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+      // send mail with defined transport object
+      const info = await transporter.sendMail({
+        from: '"Smart Edu Contact Form" <casus589@gmail.com>', // sender address
+        to: "WoTBlitz_01@outlook.com", // list of receivers
+        subject: "Smart Edu Contact Form New Message",
+        html: outputMessage, // html body
+      });
+
+      console.log("Message sent: %s", info.messageId);
+      // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+
+
+    req.flash("success", "We received your message successfully");
+
+    res.status(200).redirect("contact");
+  } catch (err) {
+    req.flash("error", `Something happened! ${err}`);
+    res.status(200).redirect("contact");
   }
-  main().catch(console.error);
-
-  res.status(200).redirect('contact')
-
-}
+};
