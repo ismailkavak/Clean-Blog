@@ -23,23 +23,22 @@ exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) {
-      req.flash("error", "User is not exist!");
-      res.status(400).redirect("/login")
-    }
+    // if (!((user.email) || (user.password))) {
+    //   req.flash("error", "User is not exist!");
+    //   res.status(400).redirect("/login")
+    // }
     const same = await bcrypt.compare(password, user.password);
     if (same) {
       req.session.userID = user._id;
       res.status(200).redirect("/users/dashboard");
+      
     }else {
       req.flash("error", "Your password is not correct!");
       res.status(400).redirect("/login")
     }
   } catch (error) {
-    res.status(400).json({
-      status: "failed",
-      error,
-    });
+      req.flash("error", "User is not exist!");
+      res.status(400).redirect("/login")
   }
 };
 
