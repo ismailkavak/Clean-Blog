@@ -11,7 +11,7 @@ const userRoute = require("./routes/userRoute");
 
 const app = express();
 // CONNECT DB
-mongoose.connect("mongodb://127.0.0.1:27017/smartedu-db");
+mongoose.connect("mongodb+srv://casus589:sQUi37g6qGTIAbDx@cluster0.wdef7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
 
 // TEMPLATE ENGINE
 app.set("view engine", "ejs");
@@ -29,7 +29,7 @@ app.use(
     secret: "my_keyboard_cat",
     resave: false,
     saveUninitialized: true,
-    store: MongoStore.create({ mongoUrl: "mongodb://localhost/smartedu-db" }),
+    store: MongoStore.create({ mongoUrl: "mongodb+srv://casus589:sQUi37g6qGTIAbDx@cluster0.wdef7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0" }),
   })
 );
 app.use(flash());
